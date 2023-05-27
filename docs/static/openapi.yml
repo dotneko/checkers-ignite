@@ -44905,6 +44905,11 @@ definitions:
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
+  dotneko.checkers.checkers.MsgCreateGameResponse:
+    type: object
+    properties:
+      gameIndex:
+        type: string
   dotneko.checkers.checkers.Params:
     type: object
     description: Params defines the parameters for the module.
