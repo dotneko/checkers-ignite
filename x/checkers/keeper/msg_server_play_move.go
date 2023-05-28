@@ -4,6 +4,8 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/dotneko/checkers/x/checkers/rules"
 	"github.com/dotneko/checkers/x/checkers/types"
 )
 
@@ -11,7 +13,61 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
-	_ = ctx
+	// _ = ctx
 
-	return &types.MsgPlayMoveResponse{}, nil
+	storedGame, found := k.Keeper.GetStoredGame(ctx, msg.GameIndex)
+	if !found {
+		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
+	}
+
+	// Check if player legitimate
+	isBlack := storedGame.Black == msg.Creator
+	isRed := storedGame.Red == msg.Creator
+	var player rules.Player
+	if !isBlack && !isRed {
+		return nil, sdkerrors.Wrapf(types.ErrCreatorNotPlayer, "%s", msg.Creator)
+	} else if isBlack && isRed {
+		player = rules.StringPieces[storedGame.Turn].Player
+	} else if isBlack {
+		player = rules.BLACK_PLAYER
+	} else {
+		player = rules.RED_PLAYER
+	}
+
+	// Instantiate the board
+	game, err := storedGame.ParseGame()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	// Check if player's turn
+	if !game.TurnIs(player) {
+		return nil, sdkerrors.Wrapf(types.ErrNotPlayerTurn, "%s", player)
+	}
+
+	// Conduct move
+	captured, moveErr := game.Move(
+		rules.Pos{
+			X: int(msg.FromX),
+			Y: int(msg.FromY),
+		},
+		rules.Pos{
+			X: int(msg.ToX),
+			Y: int(msg.ToY),
+		},
+	)
+	if moveErr != nil {
+		return nil, sdkerrors.Wrapf(types.ErrWrongMove, moveErr.Error())
+	}
+
+	// Update board and store
+	storedGame.Board = game.String()
+	storedGame.Turn = rules.PieceStrings[game.Turn]
+	k.Keeper.SetStoredGame(ctx, storedGame)
+
+	return &types.MsgPlayMoveResponse{
+		CapturedX: int32(captured.X),
+		CapturedY: int32(captured.Y),
+		Winner:    rules.PieceStrings[game.Winner()],
+	}, nil
 }
