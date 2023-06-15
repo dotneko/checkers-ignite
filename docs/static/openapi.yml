@@ -18847,6 +18847,16 @@ paths:
                       type: string
                     deadline:
                       type: string
+                    moveCount:
+                      type: string
+                      format: uint64
+                    beforeIndex:
+                      type: string
+                    afterIndex:
+                      type: string
+                    wager:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -18978,6 +18988,16 @@ paths:
                     type: string
                   deadline:
                     type: string
+                  moveCount:
+                    type: string
+                    format: uint64
+                  beforeIndex:
+                    type: string
+                  afterIndex:
+                    type: string
+                  wager:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -19019,6 +19039,10 @@ paths:
                   nextId:
                     type: string
                     format: uint64
+                  fifoHeadIndex:
+                    type: string
+                  fifoTailIndex:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -44954,6 +44978,16 @@ definitions:
               type: string
             deadline:
               type: string
+            moveCount:
+              type: string
+              format: uint64
+            beforeIndex:
+              type: string
+            afterIndex:
+              type: string
+            wager:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:
@@ -44999,6 +45033,16 @@ definitions:
             type: string
           deadline:
             type: string
+          moveCount:
+            type: string
+            format: uint64
+          beforeIndex:
+            type: string
+          afterIndex:
+            type: string
+          wager:
+            type: string
+            format: uint64
   dotneko.checkers.checkers.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -45008,6 +45052,10 @@ definitions:
           nextId:
             type: string
             format: uint64
+          fifoHeadIndex:
+            type: string
+          fifoTailIndex:
+            type: string
   dotneko.checkers.checkers.QueryParamsResponse:
     type: object
     properties:
@@ -45032,12 +45080,26 @@ definitions:
         type: string
       deadline:
         type: string
+      moveCount:
+        type: string
+        format: uint64
+      beforeIndex:
+        type: string
+      afterIndex:
+        type: string
+      wager:
+        type: string
+        format: uint64
   dotneko.checkers.checkers.SystemInfo:
     type: object
     properties:
       nextId:
         type: string
         format: uint64
+      fifoHeadIndex:
+        type: string
+      fifoTailIndex:
+        type: string
   ibc.applications.interchain_accounts.controller.v1.Params:
     type: object
     properties:

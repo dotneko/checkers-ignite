@@ -66,11 +66,21 @@ export interface CheckersStoredGame {
   red?: string;
   winner?: string;
   deadline?: string;
+
+  /** @format uint64 */
+  moveCount?: string;
+  beforeIndex?: string;
+  afterIndex?: string;
+
+  /** @format uint64 */
+  wager?: string;
 }
 
 export interface CheckersSystemInfo {
   /** @format uint64 */
   nextId?: string;
+  fifoHeadIndex?: string;
+  fifoTailIndex?: string;
 }
 
 export interface ProtobufAny {
