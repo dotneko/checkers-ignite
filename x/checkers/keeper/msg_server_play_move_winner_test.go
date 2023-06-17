@@ -10,8 +10,10 @@ import (
 )
 
 func TestPlayMoveUpToWinner(t *testing.T) {
-	msgServer, keeper, context := setupMsgServerWithOneGameForPlayMove(t)
+	msgServer, keeper, context, ctrl, escrow := setupMsgServerWithOneGameForPlayMove(t)
 	ctx := sdk.UnwrapSDKContext(context)
+	defer ctrl.Finish()
+	escrow.ExpectAny(context)
 
 	testutil.PlayAllMoves(t, msgServer, context, "1", bob, carol, testutil.Game1Moves)
 
@@ -36,6 +38,7 @@ func TestPlayMoveUpToWinner(t *testing.T) {
 		MoveCount:   40,
 		BeforeIndex: types.NoFifoIndex,
 		AfterIndex:  types.NoFifoIndex,
+		Wager:       45,
 	}, game)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
 	require.Len(t, events, 2)

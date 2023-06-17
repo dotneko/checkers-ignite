@@ -124,6 +124,7 @@ func TestPlayMoveSavedGame(t *testing.T) {
 		MoveCount:   1,
 		BeforeIndex: "-1",
 		AfterIndex:  "-1",
+		Wager:       45,
 	}, game1)
 }
 
@@ -294,6 +295,7 @@ func TestPlayMove2SavedGame(t *testing.T) {
 		MoveCount:   2,
 		BeforeIndex: "-1",
 		AfterIndex:  "-1",
+		Wager:       45,
 	}, game1)
 }
 
@@ -418,6 +420,7 @@ func TestPlayMove3SavedGame(t *testing.T) {
 		MoveCount:   3,
 		BeforeIndex: "-1",
 		AfterIndex:  "-1",
+		Wager:       45,
 	}, game1)
 }
 
